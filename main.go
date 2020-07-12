@@ -10,24 +10,12 @@ import (
 	"time"
 )
 
-// TODO --set-interval -i
-
 var Desktop = os.Getenv("XDG_CURRENT_DESKTOP")
 
 var DesktopSession = os.Getenv("DESKTOP_SESSION")
 
 // ErrUnsupportedDE is thrown when Desktop is not a supported desktop environment.
 var ErrUnsupportedDE = errors.New("your desktop environment is not supported")
-
-func removeHidden(s []string, r byte) []string {
-	for i, v := range s {
-		if v[0] == r {
-			s = append(s[:i], s[i+1:]...)
-		}
-		ns := ns + v
-	}
-	return s
-}
 
 func main() {
 	args := os.Args[1:]
@@ -38,12 +26,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	fileNames := make([]string, len(files))
-	for i, f := range files {
-		fileNames[i] = f.Name()
+	var fileNames []string
+	var i int
+	for _, f := range files {
+		if f.Name()[0] == '.' || f.IsDir() {
+			continue
+		}
+		fileNames = append(fileNames, f.Name())
+		i++
 	}
-
-	fileNames = removeHidden(fileNames, '.')
 
 	// Divide day by number of pictures in the folder.
 	if len(args) == 1 {
