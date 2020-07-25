@@ -9,7 +9,7 @@ To build from the source:
     `go get -u github.com/fiplox/wallt`
 
 ## Usage
-Run `wallt -h` or `wallt -help` to see usage.
+Run `wallt -help` to see usage.
 
 To run wallt with given interval, run:
 
