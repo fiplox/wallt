@@ -17,7 +17,7 @@ func main() {
 
 	flag.StringVar(&wallpaperPath, "path", "", "Specify absolute path to wallpaper folder. Required.")
 	flag.StringVar(&mode, "mode", "auto", "Specify mode of use. Mods available: auto (default), interval, time.")
-	flag.StringVar(&HHMM, "time", "", "Specify the interval of time to change wallpaper. Required if -mode=interval.")
+	flag.StringVar(&HHMM, "i", "", "Specify the interval of time to change wallpaper. Required if -mode=interval.")
 
 	flag.Parse()
 
