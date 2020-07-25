@@ -9,24 +9,17 @@ To build from the source:
     `go get -u github.com/fiplox/wallt`
 
 ## Usage
-`wallt -h` is not implemented yet!
+Run `wallt -h` or `wallt -help` to see usage.
 
 To run wallt with given interval, run:
 
-`wallt /path/to/wallpapers -i HH:mm`
-
-or
-
-`wallt /path/to/wallpapers --set-interval HH:mm`
+`wallt -path=/absolute/path/to/wallpapers -mode=interval -i=HH:mm`
 
 To run wallt at predefined time, run:
 
-`wallt /path/to/wallpapers -t HH HH HH` as many as you wish
-
-or
-
-`wallt /path/to/wallpapers --set-time HH HH`
+`wallt -path=/absolute/path/to/wallpapers -mode=time HH HH HH HH` as many as you wish.
+If you give `n` hours it will change between first `n` pictures in directory.
 
 And if you run without options, like so:
 
-`wallt /path/to/wallpapers` it will calculate the delay of changing wallpaper by the number of pictures in the directory.
+`wallt -path=/absolute/path/to/wallpapers` it will calculate the delay of changing wallpaper by the number of pictures in the directory.
