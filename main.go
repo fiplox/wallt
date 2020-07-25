@@ -14,13 +14,19 @@ import (
 
 func main() {
 	var wallpaperPath, mode, HHMM string
+	var help bool
 
 	flag.StringVar(&wallpaperPath, "path", "", "Specify absolute path to wallpaper folder. Required.")
 	flag.StringVar(&mode, "mode", "auto", "Specify mode of use. Mods available: auto (default), interval, time.")
 	flag.StringVar(&HHMM, "i", "", "Specify the interval of time to change wallpaper. Required if -mode=interval.")
+	flag.BoolVar(&help, "help", false, "Display usage information.")
 
 	flag.Parse()
 
+	if help {
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
 	if wallpaperPath == "" || (mode == "interval" && HHMM == "") || (mode == "auto" && HHMM != "") || (mode == "time" && HHMM != "") {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 		flag.PrintDefaults()
