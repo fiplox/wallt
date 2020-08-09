@@ -71,22 +71,26 @@ func main() {
 		}
 	}
 	conf.Close()
+	var now time.Time
+	var next time.Time
 
 	switch mode {
 	case "auto":
 		var delay int = 86400 / len(fileNames)
 		for {
-			now := time.Now()
 			if i >= len(fileNames) {
 				i -= len(fileNames)
 			}
 
-			next := now.Add(time.Second * time.Duration(delay))
+			now = time.Now()
+			next = now.Add(time.Second * time.Duration(delay))
+
 			err := wallpaper.SetFromFile(wallpaperPath + fileNames[i])
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
+
 			fmt.Println("next in:", time.Until(next))
 			i++
 			ioutil.WriteFile(wallpaperPath+".index", []byte(strconv.Itoa(i)), 644)
@@ -107,13 +111,16 @@ func main() {
 			if i > len(fileNames) {
 				i = 0
 			}
-			now := time.Now()
-			next := now.Add(time.Minute * time.Duration(m))
+
+			now = time.Now()
+			next = now.Add(time.Minute * time.Duration(m))
+
 			err := wallpaper.SetFromFile(wallpaperPath + fileNames[i])
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
+
 			fmt.Println("next in:", time.Until(next))
 			i++
 			ioutil.WriteFile(wallpaperPath+".index", []byte(strconv.Itoa(i)), 644)
@@ -129,7 +136,7 @@ func main() {
 			}
 		}
 
-		now := time.Now()
+		now = time.Now()
 		i = 0
 		for I := 0; I < len(times)-1; I++ {
 			if now.Hour() > times[I] && now.Hour() < times[I+1] {
@@ -144,7 +151,7 @@ func main() {
 				i = 0
 			}
 
-			next := time.Date(now.Year(), now.Month(), now.Day(), times[i], 0, 0, 0, now.Location())
+			next = time.Date(now.Year(), now.Month(), now.Day(), times[i], 0, 0, 0, now.Location())
 			if time.Until(next) < time.Duration(0) {
 				next = next.AddDate(0, 0, 1)
 			}
