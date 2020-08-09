@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+
 	var wallpaperPath, mode, HHMM string
 	var help bool
 
@@ -30,6 +31,7 @@ func main() {
 	if wallpaperPath == "" || (mode == "interval" && HHMM == "") || (mode == "auto" && HHMM != "") || (mode == "time" && HHMM != "") {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 		flag.PrintDefaults()
+
 		return
 	}
 
@@ -46,16 +48,20 @@ func main() {
 	// get file names.
 	var fileNames []string
 	var i int
+
 	for _, f := range files {
 		if f.Name()[0] == '.' || f.IsDir() {
 			continue
 		}
+
 		fileNames = append(fileNames, f.Name())
+
 		i++
 	}
 
 	i = 0
 	conf, err := os.OpenFile(wallpaperPath+".index", os.O_RDWR, 0755)
+
 	if err != nil {
 		conf, err := os.Create(wallpaperPath + ".index")
 		if err != nil {
@@ -70,13 +76,15 @@ func main() {
 			os.Exit(1)
 		}
 	}
+
 	conf.Close()
-	var now time.Time
-	var next time.Time
+
+	var now, next time.Time
 
 	switch mode {
 	case "auto":
 		var delay int = 86400 / len(fileNames)
+
 		for {
 			if i >= len(fileNames) {
 				i -= len(fileNames)
@@ -138,6 +146,7 @@ func main() {
 
 		now = time.Now()
 		i = 0
+
 		for I := 0; I < len(times)-1; I++ {
 			if now.Hour() > times[I] && now.Hour() < times[I+1] {
 				i = I + 1
@@ -147,21 +156,26 @@ func main() {
 
 		for {
 			now = time.Now()
+
 			if i >= len(times) {
 				i = 0
 			}
 
 			next = time.Date(now.Year(), now.Month(), now.Day(), times[i], 0, 0, 0, now.Location())
+
 			if time.Until(next) < time.Duration(0) {
 				next = next.AddDate(0, 0, 1)
 			}
+
 			err := wallpaper.SetFromFile(wallpaperPath + fileNames[i])
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
+
 			fmt.Println("next in:", time.Until(next))
 			i++
+
 			time.Sleep(time.Until(next))
 		}
 	}
