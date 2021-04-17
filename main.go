@@ -50,7 +50,7 @@ func main() {
 	var i int
 
 	for _, f := range files {
-		if f.Name()[0] == '.' || f.IsDir() {
+		if f.Name()[0] == '.' || f.IsDir() || filepath.Ext(f.Name()) != ".jpg" || filepath.Ext(f.Name()) != ".png" || filepath.Ext(f.Name()) != ".jpeg" {
 			continue
 		}
 
